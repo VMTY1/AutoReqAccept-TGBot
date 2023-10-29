@@ -91,7 +91,7 @@ async def autoAccept(bot: Client, cmd: ChatJoinRequest):
     # Accepting Request of User ✅
     try:
         await bot.approve_chat_join_request(chat_id=chat.id, user_id=user.id)
-        await db.add_user(bot, cmd)
+        await db.add_user(bot, user)
         bool_approve_msg = await db.get_bool_approve_msg(Config.OWNER)
 
         if bool_approve_msg:
@@ -118,7 +118,7 @@ async def Upade(bot: Client, cmd: ChatMemberUpdated):
 
     # Sending Message those user who left the chat ✅
     try:
-        await db.add_user(bot, cmd)
+        await db.add_user(bot, user)
         ms = await bot.get_chat_member(chat_id=chat.id, user_id=user.id)
         print(ms.status)
     except UserNotParticipant:
