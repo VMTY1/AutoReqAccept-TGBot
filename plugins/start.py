@@ -29,29 +29,31 @@ async def _(bot: Client, cmd):
 @Client.on_message(filters.private & filters.command('start'))
 async def Start_message(bot: Client, msg: Message):
 
-    await db.add_user(bot, msg)
+    user = msg.from_user
+    await db.add_user(bot, user)
     await msg.reply_text(text=Txt.START_MSG.format(msg.from_user.mention), reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('Developer', url='https://t.me/Snowball_Official')]]))
 
 
 @Client.on_message(filters.private & filters.command(['setting', 'config']) & filters.user(Config.OWNER))
 async def Settings(bot: Client, msg: Message):
-
     SnowDev = await msg.reply_text('Please Wait ⏳')
-    bool_approve = await db.get_bool_approve_msg(msg.from_user.id)
-    bool_leave = await db.get_bool_leave_msg(msg.from_user.id)
+    try:
+        bool_approve = await db.get_bool_approve_msg(msg.from_user.id)
+        bool_leave = await db.get_bool_leave_msg(msg.from_user.id)
 
-    if bool_approve and bool_leave:
-        await SnowDev.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn1], [btn4]]))
+        if bool_approve and bool_leave:
+            await SnowDev.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn1], [btn4]]))
 
-    elif bool_approve:
-        await SnowDev.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn1], [btn3]]))
+        elif bool_approve:
+            await SnowDev.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn1], [btn3]]))
 
-    elif bool_leave:
-        await SnowDev.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn2], [btn4]]))
+        elif bool_leave:
+            await SnowDev.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn2], [btn4]]))
 
-    else:
-        await SnowDev.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn2], [btn3]]))
-
+        else:
+            await SnowDev.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn2], [btn3]]))
+    except:
+        await SnowDev.edit(text="Yᴏᴜ ʜᴀsɴ'ᴛ ᴀᴅᴅ ᴏɴ ᴛʜᴇ DᴀᴛᴀBᴀsᴇ Yᴇᴛ\n\n Usᴇ /start Cᴏᴍᴍᴀɴᴅ ɪᴛ'ʟʟ ᴀᴅᴅ ʏᴏᴜʀ ɪɴғᴏ ᴏɴ Dᴀᴛᴀʙsᴇ ᴛʜᴇɴ ʏᴏᴜ ᴄᴀɴ ᴜsᴇ /setting")
 
 @Client.on_callback_query()
 async def query(bot: Client, query: CallbackQuery):
