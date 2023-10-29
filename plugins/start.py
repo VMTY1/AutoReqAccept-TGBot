@@ -115,7 +115,7 @@ async def set_ApproveMsg(bot: Client, msg: Message):
 
 
 @Client.on_message(filters.private & filters.command('set_leavemsg') & filters.user(Config.OWNER))
-async def set_ApproveMsg(bot: Client, msg: Message):
+async def set_LeaveMsg(bot: Client, msg: Message):
 
     if msg.reply_to_message:
         ms = await msg.reply_text("Please Wait...")
