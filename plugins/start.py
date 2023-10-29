@@ -29,8 +29,7 @@ async def _(bot: Client, cmd):
 @Client.on_message(filters.private & filters.command('start'))
 async def Start_message(bot: Client, msg: Message):
 
-    user = msg.from_user
-    await db.add_user(bot, user)
+    await db.add_user(bot, msg)
     await msg.reply_text(text=Txt.START_MSG.format(msg.from_user.mention), reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('Developer', url='https://t.me/Snowball_Official')]]))
 
 
