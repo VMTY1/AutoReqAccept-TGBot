@@ -1,8 +1,8 @@
 import asyncio
 from pyrogram import Client, filters
-from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, get_bool_approve_msg, get_bool_leave_msg
+from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from config import Txt, Config
-from helper.database import add_user, add_group, all_users, all_groups, users, remove_user
+from helper.database import add_user, add_group, all_users, all_groups, users, remove_user, get_bool_leave_msg, get_bool_approve_msg
 from helper.utils import is_subscribed, force_sub
 
 
