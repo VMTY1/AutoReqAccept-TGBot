@@ -45,3 +45,9 @@ def all_groups():
     group = groups.find({})
     grps = len(list(group))
     return grps
+
+def get_bool_leave_msg(user_id):
+        pass
+
+def get_bool_approve_msg(user_id):
+        pass
