@@ -13,8 +13,7 @@ class Config(object):
     # database config
     DB_URL  = os.environ.get("DB_URL","") # ⚠️ Required
 
-    # Other Config 
-    BOT_USERNAME = os.environ.get("BOT_USERNAME", "") # ⚠️ Required
+    # Other Configs
     BOT_UPTIME  = time.time()
     OWNER = int(os.environ.get('OWNER', '')) # ⚠️ Required
     LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "")) # ⚠️ Required
