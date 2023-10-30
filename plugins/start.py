@@ -1,6 +1,6 @@
 import asyncio
 from pyrogram import Client, filters
-from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
+from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, get_bool_approve_msg, get_bool_leave_msg
 from config import Txt, Config
 from helper.database import add_user, add_group, all_users, all_groups, users, remove_user
 from helper.utils import is_subscribed, force_sub
@@ -36,8 +36,8 @@ async def Start_message(bot: Client, msg: Message):
 async def Settings(bot: Client, msg: Message):
     SnowDev = await msg.reply_text('Please Wait ⏳')
     try:
-        bool_approve = await db.get_bool_approve_msg(msg.from_user.id)
-        bool_leave = await db.get_bool_leave_msg(msg.from_user.id)
+        bool_approve = get_bool_approve_msg(msg.from_user.id)
+        bool_leave = get_bool_leave_msg(msg.from_user.id)
 
         if bool_approve and bool_leave:
             await SnowDev.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn1], [btn4]]))
