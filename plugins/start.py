@@ -2,7 +2,7 @@ import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from config import Txt, Config
-from helper.database import db
+from helper.database import add_user, add_group, all_users, all_groups, users, remove_user
 from helper.utils import is_subscribed, force_sub
 
 
@@ -28,9 +28,7 @@ async def _(bot: Client, cmd):
 
 @Client.on_message(filters.private & filters.command('start'))
 async def Start_message(bot: Client, msg: Message):
-
-    user = msg.from_user
-    await db.add_user(bot, user)
+    add_user(msg.from_user.id)
     await msg.reply_text(text=Txt.START_MSG.format(msg.from_user.mention), reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('Developer', url='https://t.me/Snowball_Official')]]))
 
 
