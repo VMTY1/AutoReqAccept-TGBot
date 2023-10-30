@@ -118,7 +118,7 @@ async def Upade(bot: Client, cmd: ChatMemberUpdated):
 
     # Sending Message those user who left the chat ✅
     try:
-        await db.add_user(bot, user)
+    
         ms = await bot.get_chat_member(chat_id=chat.id, user_id=user.id)
         print(ms.status)
     except UserNotParticipant:
