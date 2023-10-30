@@ -58,7 +58,7 @@ def all_groups():
 
 def get_bool_leave_msg(user_id):
         user = users.find_one({"user_id": str(user_id)})
-        return user.get("bool_leave"': None)
+        return user.get("bool_leave": None)
 
 def get_bool_approve_msg(user_id):
         user = users.find_one({"user_id": str(user_id)})
