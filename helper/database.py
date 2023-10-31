@@ -8,9 +8,9 @@ groups = client['main']['groups']
 
 def new_user(id):
         return dict(
-                "user_id": int(id),
-               "bool_leave": False,
-                "bool_approve": False
+                user_id: int(id),
+                bool_leave: False,
+                bool_approve: False
         )
 
 def already_db(user_id):
@@ -56,8 +56,8 @@ def all_groups():
 
 def get_bool_leave_msg(user_id):
         user = users.find_one({"user_id": str(user_id)})
-        return user.get("bool_leave": None)
+        return user
 
 def get_bool_approve_msg(user_id):
         user = users.find_one({"user_id": str(user_id)})
-        return user.get("bool_approve": None)
+        return user
