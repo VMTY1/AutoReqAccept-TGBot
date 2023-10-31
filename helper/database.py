@@ -6,13 +6,6 @@ client = MongoClient(Config.DB_URL)
 users = client['main']['users']
 groups = client['main']['groups']
 
-def new_user(id):
-        return dict(
-                user_id: int(id),
-                bool_leave: False,
-                bool_approve: False
-        )
-
 def already_db(user_id):
         user = users.find_one({"user_id" : str(user_id)})
         if not user:
@@ -30,7 +23,7 @@ def add_user(user_id):
     if in_db:
         return
     user = new_user(user_id)
-    return users.insert_one(user)
+    return users.insert_one({"user_id": str(user_id), "bool_approve": False, "bool_leave": False})
 
 def remove_user(user_id):
     in_db = already_db(user_id)
