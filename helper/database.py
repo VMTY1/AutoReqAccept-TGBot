@@ -8,9 +8,9 @@ groups = client['main']['groups']
 
 def new_user(id):
         return dict(
-                user_id: int(id),
-                bool_leave: bool(False),
-                bool_approve: bool(False)
+                "user_id": int(id),
+               "bool_leave": False,
+                "bool_approve": False
         )
 
 def already_db(user_id):
