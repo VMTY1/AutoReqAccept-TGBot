@@ -53,3 +53,9 @@ def get_bool_leave_msg(user_id):
 def get_bool_approve_msg(user_id):
         user = users.find_one({"user_id": str(user_id)})
         return user
+
+def set_bool_approve(user_id, condition):
+        users.update_one({"user_id": str(user_id), "bool_approve": condition})
+        
+def set_bool_leave(user_id, condition):
+        users.update_one({"user_id": str(user_id), "bool_leave": condition})
