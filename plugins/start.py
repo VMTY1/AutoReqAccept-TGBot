@@ -63,7 +63,8 @@ async def query(bot: Client, query: CallbackQuery):
     if data.startswith('approvalmsg'):
 
         condition = data.split('_')[1]
-        bool_leave = await db.get_bool_leave_msg(query.message.chat.id)
+        bool_leave = get_bool_leave_msg(msg.messsge.chat.id)
+        bool_leave = bool_leave.get('bool_leave')
         if condition == 'on':
             if bool_leave:
                 await db.set_bool_approve_msg(query.message.chat.id, False)
@@ -82,7 +83,8 @@ async def query(bot: Client, query: CallbackQuery):
 
     elif data.startswith('leavingmsg'):
         condition = data.split('_')[1]
-        bool_approve = await db.get_bool_approve_msg(query.message.chat.id)
+        bool_approve = get_bool_approve_msg(query.message.chat.id)
+        bool_approve = bool_approve.get('bool_approve')
         if condition == 'on':
             if bool_approve:
                 await db.set_bool_leave_msg(query.message.chat.id, False)
