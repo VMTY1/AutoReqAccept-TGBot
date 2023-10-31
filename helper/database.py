@@ -1,73 +1,84 @@
-import motor.motor_asyncio
+from pymongo import MongoClient
 from config import Config
 from .utils import send_log
+import sys
 
+client = MongoClient(Config.DB_URL)
 
-class Database:
+users = client['main']['users']
+groups = client['main']['groups']
 
-    def __init__(self, uri, database_name):
-        self._client = motor.motor_asyncio.AsyncIOMotorClient(uri)
-        self.db = self._client[database_name]
-        self.col = self.db.user
+def already_db(user_id):
+        user = users.find_one({"user_id" : str(user_id)})
+        if not user:
+            return False
+        return True
 
-    def new_user(self, id):
-        return dict(
-            _id= int(id),
-            bool_approve_msg=False,
-            bool_leave_msg=False,
-            approve_msg=False,
-            leave_msg= False
-        )
+def already_dbg(chat_id):
+        group = groups.find_one({"chat_id" : str(chat_id)})
+        if not group:
+            return False
+        return True
 
-    async def add_user(self, b, m):
-        u = m
-        if not await self.is_user_exist(u.id):
-            user = self.new_user(u.id)    
-            await self.col.insert_one(user)
-            await send_log(b, u)
-
-    async def is_user_exist(self, id):
-        user = await self.col.find_one({'_id': int(id)})
-        return bool(user)
-
-    async def total_users_count(self):
-        count = await self.col.count_documents({})
-        return count
-
-    async def get_all_users(self):
-        all_users = self.col.find({})
-        return all_users
-
-    async def delete_user(self, user_id):
-        await self.col.delete_many({'_id': int(user_id)})
-
-    async def set_bool_approve_msg(self, id, bool_approve_msg):
-        await self.col.update_one({'_id': int(id)}, {'$set': {'bool_approve_msg': bool_approve_msg}})
-
-    async def get_bool_approve_msg(self, id):
-        user = await self.col.find_one({'_id': int(id)})
-        return user.get('bool_approve_msg', None)
-
-    async def set_bool_leave_msg(self, id, bool_leave_msg):
-        await self.col.update_one({'_id': int(id)}, {'$set': {'bool_leave_msg': bool_leave_msg}})
-
-    async def get_bool_leave_msg(self, id):
-        user = await self.col.find_one({'_id': int(id)})
-        return user.get('bool_leave_msg', None)
+async def add_user(user_id, b, u):
+    in_db = already_db(user_id)
+    if in_db:
+        return
     
-    async def set_approve_msg(self, id, approve_msg):
-        await self.col.update_one({'_id': int(id)}, {'$set': {'approve_msg': approve_msg}})
-
-    async def get_approve_msg(self, id):
-        user = await self.col.find_one({'_id': int(id)})
-        return user.get('approve_msg', None)
+    users.insert_one({"user_id": str(user_id), "bool_approve": False, "bool_leave": False, 'approve_msg': False, 'leave_msg': False})
+    try:
+        await send_log(b=b, u=u)
+    except Exception as e:
+         print('Error on line {}'.format(
+            sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
+def remove_user(user_id):
+    in_db = already_db(user_id)
+    if not in_db:
+        return 
+    return users.delete_one({"user_id": str(user_id)})
     
-    async def set_leave_msg(self, id, leave_msg):
-        await self.col.update_one({'_id': int(id)}, {'$set': {'leave_msg': leave_msg}})
+def add_group(chat_id):
+    in_db = already_dbg(chat_id)
+    if in_db:
+        return
+    return groups.insert_one({"chat_id": str(chat_id)})
 
-    async def get_leave_msg(self, id):
-        user = await self.col.find_one({'_id': int(id)})
-        return user.get('leave_msg', None)
+def all_users():
+    user = users.find({})
+    usrs = len(list(user))
+    return usrs
 
+def all_groups():
+    group = groups.find({})
+    grps = len(list(group))
+    return grps
 
-db = Database(Config.DB_URL, Config.BOT_USERNAME)
+def get_bool_leave_msg(user_id):
+        user = users.find_one({"user_id": str(user_id)}).get('bool_leave')
+        return user
+
+def get_bool_approve_msg(user_id):
+        user = users.find_one({"user_id": str(user_id)}).get('bool_approve')
+        return user
+
+def get_leave_msg(user_id):
+      user = users.find_one({'user_id': str(user_id)}).get('leave_msg')
+      return user
+
+def get_approve_msg(user_id):
+      user = users.find_one({'user_id': str(user_id)}).get('approve_msg')
+      return user
+
+def set_leave_msg(user_id, message):
+      users.update_one({'user_id': str(user_id)}, {'$set': {'leave_msg': message}})
+
+def set_approve_msg(user_id, message):
+      users.update_one({'user_id': str(user_id)}, {'$set': {'approve_msg': message}})
+
+def set_bool_approve_msg(user_id, condition):
+      users.update_one({"user_id": str(user_id)}, {'$set': {'bool_approve': condition}})
+    
+        
+def set_bool_leave_msg(user_id, condition):
+     users.update_one({"user_id": str(user_id)}, {'$set': {'bool_leave': condition}})
+    
