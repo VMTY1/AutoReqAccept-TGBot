@@ -38,6 +38,8 @@ async def Settings(bot: Client, msg: Message):
     try:
         bool_approve = get_bool_approve_msg(msg.from_user.id)
         bool_leave = get_bool_leave_msg(msg.from_user.id)
+        await msg.reply_text(bool_approve)
+        await msg.reply_text(bool_leave)
 
         if bool_approve and bool_leave:
             await SnowDev.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn1], [btn4]]))
