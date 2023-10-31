@@ -40,6 +40,7 @@ async def Settings(bot: Client, msg: Message):
         bool_leave = get_bool_leave_msg(msg.from_user.id)
         await msg.reply_text(bool_approve)
         print(type(bool_approve))
+        print(bool_approve.get('bool_approve')
         await msg.reply_text(bool_leave)
 
         if bool_approve and bool_leave:
