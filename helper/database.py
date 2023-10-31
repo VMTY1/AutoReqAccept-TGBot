@@ -22,7 +22,6 @@ def add_user(user_id):
     in_db = already_db(user_id)
     if in_db:
         return
-    user = new_user(user_id)
     return users.insert_one({"user_id": str(user_id), "bool_approve": False, "bool_leave": False})
 
 def remove_user(user_id):
