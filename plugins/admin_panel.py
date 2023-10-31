@@ -1,5 +1,5 @@
 from config import Config
-from helper.database import add_user, add_group, all_users, all_groups, users, remove_user
+from helper.database import *
 from pyrogram.types import Message
 from pyrogram.types import ChatJoinRequest, Message, ChatMemberUpdated
 from pyrogram.errors import UserNotParticipant
@@ -58,10 +58,10 @@ async def broadcast_handler(bot: Client, m: Message):
             await asyncio.sleep(ex.value)
             if m.command[0] == "bcast":
                 await m.reply_to_message.copy(int(userid))
-        except errors.InputUserDeactivated:
+        except InputUserDeactivated:
             deactivated +=1
             remove_user(userid)
-        except errors.UserIsBlocked:
+        except UserIsBlocked:
             blocked +=1
         except Exception as e:
             print(e)
@@ -80,10 +80,10 @@ async def autoAccept(bot: Client, cmd: ChatJoinRequest):
         await bot.approve_chat_join_request(chat_id=chat.id, user_id=user.id)
         add_group(cmd.chat.id)
         add_user(user.id)
-        bool_approve_msg = await db.get_bool_approve_msg(Config.OWNER)
+        bool_approve_msg = get_bool_approve_msg(Config.OWNER)
 
         if bool_approve_msg:
-            _param = await db.get_approve_msg(Config.OWNER)
+            _param = get_approve_msg(Config.OWNER)
 
             if _param:
                 await bot.send_message(chat_id=user.id, text=_param.format(mention=user.mention, title=chat.title))
@@ -110,10 +110,10 @@ async def Upade(bot: Client, cmd: ChatMemberUpdated):
         ms = await bot.get_chat_member(chat_id=chat.id, user_id=user.id)
         print(ms.status)
     except UserNotParticipant:
-        bool_leave = await db.get_bool_leave_msg(Config.OWNER)
+        bool_leave = get_bool_leave_msg(Config.OWNER)
 
         if bool_leave:
-            leavemsg = await db.get_leave_msg(Config.OWNER)
+            leavemsg = get_leave_msg(Config.OWNER)
             print(leavemsg)
             if leavemsg:
                 await bot.send_message(chat_id=user.id, text=leavemsg.format(mention=user.mention, title=chat.title))
