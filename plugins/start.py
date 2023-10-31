@@ -67,7 +67,7 @@ async def query(bot: Client, query: CallbackQuery):
         bool_leave = bool_leave.get('bool_leave')
         if condition == 'on':
             if bool_leave:
-                await db.set_bool_approve_msg(query.message.chat.id, False)
+                set_bool_approve_msg(query.message.chat.id, False)
                 await query.message.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn2], [btn4]]))
             else:
                 await db.set_bool_approve_msg(query.message.chat.id, False)
@@ -75,10 +75,10 @@ async def query(bot: Client, query: CallbackQuery):
 
         elif condition == 'off':
             if bool_leave:
-                await db.set_bool_approve_msg(query.message.chat.id, True)
+                set_bool_approve_msg(query.message.chat.id, True)
                 await query.message.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn1], [btn4]]))
             else:
-                await db.set_bool_approve_msg(query.message.chat.id, True)
+                set_bool_approve_msg(query.message.chat.id, True)
                 await query.message.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn1], [btn3]]))
 
     elif data.startswith('leavingmsg'):
@@ -87,18 +87,18 @@ async def query(bot: Client, query: CallbackQuery):
         bool_approve = bool_approve.get('bool_approve')
         if condition == 'on':
             if bool_approve:
-                await db.set_bool_leave_msg(query.message.chat.id, False)
+                set_bool_leave_msg(query.message.chat.id, False)
                 await query.message.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn1], [btn3]]))
             else:
-                await db.set_bool_leave_msg(query.message.chat.id, False)
+                set_bool_leave_msg(query.message.chat.id, False)
                 await query.message.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn2], [btn3]]))
 
         elif condition == 'off':
             if bool_approve:
-                await db.set_bool_leave_msg(query.message.chat.id, True)
+                set_bool_leave_msg(query.message.chat.id, True)
                 await query.message.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn1], [btn4]]))
             else:
-                await db.set_bool_leave_msg(query.message.chat.id, True)
+                set_bool_leave_msg(query.message.chat.id, True)
                 await query.message.edit(text="**Your Approval and Leaving Message Settings ⚙️**", reply_markup=InlineKeyboardMarkup([[btn2], [btn4]]))
 
 
