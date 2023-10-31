@@ -8,7 +8,7 @@ groups = client['main']['groups']
 
 def new_user(id):
         return dict(
-                user_id: id,
+                user_id: int(id),
                 bool_approve: False,
                 bool_leave: False,
                 
